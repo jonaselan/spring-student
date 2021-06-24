@@ -7,7 +7,6 @@ import java.util.List;
 
 @Service
 public class StudentService {
-
     private final StudentRepository studentRepository;
 
     @Autowired
@@ -17,5 +16,9 @@ public class StudentService {
 
     public List<Student> getStudents() {
         return studentRepository.findAll();
+    }
+
+    public void addNewStudent(Student student) {
+        studentRepository.save(student);
     }
 }
