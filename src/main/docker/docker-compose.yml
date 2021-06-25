@@ -5,6 +5,8 @@ services:
     image: 'demo:latest'
     build:
       context: .
+    volumes:
+      - .:/home
     ports:
       - "8080:8080"
     container_name: app

@@ -1,5 +1,7 @@
 package com.example.demo.student;
 
+import com.example.demo.address.Address;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
@@ -11,11 +13,20 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", updatable = false)
     private Long id;
+
+    @OneToOne(
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE}
+    )
+    private Address address;
+
     @Column(name = "name", nullable = false)
     private String name;
+
     @Column( name = "email", nullable = false, unique = true)
     private String email;
     private LocalDate dob;
+
     @Transient
     private Integer age;
 
