@@ -9,8 +9,11 @@ import java.time.Period;
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id", updatable = false)
     private Long id;
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column( name = "email", nullable = false, unique = true)
     private String email;
     private LocalDate dob;
     @Transient
