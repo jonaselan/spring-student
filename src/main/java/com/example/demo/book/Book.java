@@ -5,20 +5,14 @@ import com.example.demo.student.Student;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-import static javax.persistence.GenerationType.SEQUENCE;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity(name = "Book")
 @Table(name = "book")
 public class Book {
     @Id
-    @SequenceGenerator(
-            name = "book_sequence",
-            sequenceName = "book_sequence",
-            allocationSize = 1
-    )
     @GeneratedValue(
-            strategy = SEQUENCE,
-            generator = "book_sequence"
+            strategy = IDENTITY
     )
     @Column(
             name = "id",
@@ -31,6 +25,8 @@ public class Book {
             nullable = false
     )
     private String name;
+    @Column
+    private BookStatus status = BookStatus.AVAILABLE;
 
     @ManyToOne
     @JoinColumn(
@@ -71,6 +67,10 @@ public class Book {
         return student;
     }
 
+    public BookStatus getBookStatus() {
+        return status;
+    }
+
     public String getName() {
         return name;
     }
@@ -96,6 +96,7 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", createdAt=" + createdAt +
+                ", status=" + status +
                 ", bookName='" + name + '\'' +
                 ", student=" + student +
                 '}';
