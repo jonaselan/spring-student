@@ -1,10 +1,13 @@
 package com.example.demo.student;
 
 import com.example.demo.address.Address;
+import com.example.demo.book.Book;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -26,6 +29,14 @@ public class Student {
     @Column( name = "email", nullable = false, unique = true)
     private String email;
     private LocalDate dob;
+
+    @OneToMany(
+            mappedBy = "student",
+            orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            fetch = FetchType.LAZY
+    )
+    private List<Book> books = new ArrayList<>();
 
     @Transient
     private Integer age;
@@ -73,6 +84,10 @@ public class Student {
 
     public Integer getAge() {
         return Period.between(this.dob, LocalDate.now()).getYears();
+    }
+
+    public List<Book> getBooks() {
+        return books;
     }
 
     @Override
