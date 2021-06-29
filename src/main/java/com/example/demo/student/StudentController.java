@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import java.net.URI;
 import java.util.List;
 
@@ -16,6 +17,8 @@ public class StudentController {
     private final StudentService studentService;
     @Autowired
     private AddressRepository addressRepository;
+    @Autowired
+    private StudentRepository studentRepository;
 
     @Autowired
     public StudentController(StudentService studentService) {
@@ -41,8 +44,18 @@ public class StudentController {
         return ResponseEntity.created(uri).body(student);
     }
 
+    @PutMapping(path = "{studentId}")
+    @Transactional
+    public ResponseEntity<Student> update(@PathVariable Long studentId, @RequestBody StudentDataUpdate studentData) {
+        Student student = studentData.update(studentId, studentRepository);
+
+        return ResponseEntity.ok(student);
+    }
+
     @DeleteMapping(path = "{studentId}")
-    public void delete(@PathVariable("studentId") Long id) {
+    public ResponseEntity delete(@PathVariable("studentId") Long id) {
         studentService.deleteStudent(id);
+
+        return ResponseEntity.ok().build();
     }
 }
