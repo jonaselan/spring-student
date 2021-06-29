@@ -2,8 +2,11 @@ package com.example.demo.student;
 
 import com.example.demo.address.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -30,9 +33,12 @@ public class StudentController {
     }
 
     @PostMapping
-    public void store(@RequestBody StudentData studentData) {
+    public ResponseEntity<Student> store(@RequestBody StudentData studentData, UriComponentsBuilder uriBuilder) {
         Student student = studentData.convert(addressRepository);
         studentService.addStudent(student);
+
+        URI uri = uriBuilder.path("/student/{id}").buildAndExpand(student.getId()).toUri();
+        return ResponseEntity.created(uri).body(student);
     }
 
     @DeleteMapping(path = "{studentId}")
