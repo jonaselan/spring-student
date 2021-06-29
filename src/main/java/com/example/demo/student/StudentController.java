@@ -24,6 +24,11 @@ public class StudentController {
         return studentService.getStudents();
     }
 
+    @GetMapping(path = "{studentId}")
+    public Student show(@PathVariable("studentId") Long id) {
+        return studentService.getStudent(id);
+    }
+
     @PostMapping
     public void store(@RequestBody StudentData studentData) {
         Student student = studentData.convert(addressRepository);
