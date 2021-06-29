@@ -3,6 +3,7 @@ package com.example.demo.address;
 import com.example.demo.student.Student;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table
@@ -15,6 +16,10 @@ public class Address {
             length = 45
     )
     private String location;
+    @Column(
+            name = "created_at"
+    )
+    private LocalDateTime createdAt = LocalDateTime.now();
     @OneToOne(mappedBy = "address", cascade = CascadeType.ALL)
     private Student student;
 
