@@ -13,8 +13,8 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    @Autowired
-    private AuthenticationManager authenticationManager;
+//    @Autowired
+//    private AuthenticationManager authenticationManager;
 
 //    @PostMapping(path = "/login")
 //    public ResponseEntity<?> login(@RequestBody @Valid LoginData loginData) {
