@@ -2,13 +2,15 @@ package com.example.demo.student;
 
 import com.example.demo.address.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/student")
@@ -26,8 +28,9 @@ public class StudentController {
     }
 
     @GetMapping
-    public List<Student> index() {
-        return studentService.getStudents();
+    public Page<Student> index(@RequestParam int page, @RequestParam int perPage) {
+        Pageable pageable = PageRequest.of(page, perPage);
+        return studentService.getStudents(pageable);
     }
 
     @GetMapping(path = "{studentId}")
