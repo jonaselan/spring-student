@@ -29,7 +29,7 @@ public class Student implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column( name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
     private LocalDate dob;
 
@@ -41,9 +41,7 @@ public class Student implements Serializable {
     )
     private List<Book> books = new ArrayList<>();
 
-    @Column(
-            name = "created_at"
-    )
+    @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Transient

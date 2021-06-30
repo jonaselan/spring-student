@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -43,7 +44,7 @@ public class StudentController {
 
     @PostMapping
     @CacheEvict(value = "studentIndex", allEntries = true)
-    public ResponseEntity<Student> store(@RequestBody StudentData studentData, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<Student> store(@RequestBody @Valid StudentData studentData, UriComponentsBuilder uriBuilder) {
         Student student = studentData.convert(addressRepository);
         studentService.addStudent(student);
 
@@ -54,7 +55,7 @@ public class StudentController {
     @PutMapping(path = "{studentId}")
     @Transactional
     @CacheEvict(value = "studentIndex", allEntries = true)
-    public ResponseEntity<Student> update(@PathVariable Long studentId, @RequestBody StudentDataUpdate studentData) {
+    public ResponseEntity<Student> update(@PathVariable Long studentId, @RequestBody @Valid StudentDataUpdate studentData) {
         Student student = studentData.update(studentId, studentRepository);
 
         return ResponseEntity.ok(student);
