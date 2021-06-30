@@ -3,8 +3,9 @@ package com.example.demo.student;
 import com.example.demo.address.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -28,8 +29,7 @@ public class StudentController {
     }
 
     @GetMapping
-    public Page<Student> index(@RequestParam int page, @RequestParam int perPage) {
-        Pageable pageable = PageRequest.of(page, perPage);
+    public Page<Student> index(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         return studentService.getStudents(pageable);
     }
 
