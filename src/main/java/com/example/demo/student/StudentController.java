@@ -2,6 +2,8 @@ package com.example.demo.student;
 
 import com.example.demo.address.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -29,6 +31,7 @@ public class StudentController {
     }
 
     @GetMapping
+    @Cacheable(value = "studentIndex")
     public Page<Student> index(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         return studentService.getStudents(pageable);
     }
@@ -39,6 +42,7 @@ public class StudentController {
     }
 
     @PostMapping
+    @CacheEvict(value = "studentIndex", allEntries = true)
     public ResponseEntity<Student> store(@RequestBody StudentData studentData, UriComponentsBuilder uriBuilder) {
         Student student = studentData.convert(addressRepository);
         studentService.addStudent(student);
@@ -49,6 +53,7 @@ public class StudentController {
 
     @PutMapping(path = "{studentId}")
     @Transactional
+    @CacheEvict(value = "studentIndex", allEntries = true)
     public ResponseEntity<Student> update(@PathVariable Long studentId, @RequestBody StudentDataUpdate studentData) {
         Student student = studentData.update(studentId, studentRepository);
 
