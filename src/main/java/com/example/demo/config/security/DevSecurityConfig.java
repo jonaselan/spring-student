@@ -13,24 +13,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @EnableWebSecurity
 @Configuration
-@Profile("prod")
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private AuthenticationService authenticationService;
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(authenticationService).passwordEncoder(new BCryptPasswordEncoder());
-    }
+@Profile("dev")
+public class DevSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+                .antMatchers( "**").permitAll()
                 .anyRequest().authenticated()
-        .and().csrf().disable()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        .and().csrf().disable();
     }
 }
